@@ -1,3 +1,4 @@
+"use client";
 
 import { useState } from "react";
 import { ethers } from "ethers";
@@ -32,7 +33,11 @@ export default function Chat() {
       ["function transfer(address from, address to, euint64 amount) public"],
       signer
     );
-    const tx = await contract.transfer(await signer.getAddress(), recipient, encryptedAmount.handle);
+    const tx = await contract.transfer(
+      await signer.getAddress(),
+      recipient,
+      encryptedAmount.handle
+    );
     await tx.wait();
     alert("Confidential transfer submitted!");
   };
@@ -47,7 +52,9 @@ export default function Chat() {
       ["function encryptedBalanceOf(address) view returns (euint64)"],
       provider
     );
-    const encryptedBalance = await contract.encryptedBalanceOf(await signer.getAddress());
+    const encryptedBalance = await contract.encryptedBalanceOf(
+      await signer.getAddress()
+    );
     const decrypted = await userDecrypt(instance, signer, encryptedBalance);
     setBalance(decrypted.toString());
   };
@@ -55,11 +62,14 @@ export default function Chat() {
   // Zama chatbot
   const handleChat = async () => {
     if (!chatInput) return;
-    const res = await fetch("https://api.zama.ai/chatbot", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ query: chatInput }),
-    });
+    const res = await fetch(
+      "https://chatgpt.com/g/g-687548533b7c819185a5f992b7f48e72-zama-protocol-gpt",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query: chatInput }),
+      }
+    );
     const data = await res.json();
     setChatResponse(data.answer || "No response");
   };
@@ -76,7 +86,9 @@ export default function Chat() {
 
         {/* Confidential Transfer */}
         <div className="bg-yellow-900/10 border border-yellow-400/40 rounded-xl p-6 w-full max-w-xl mx-auto space-y-4">
-          <h2 className="text-lg font-semibold text-yellow-400">Confidential Transfer</h2>
+          <h2 className="text-lg font-semibold text-yellow-400">
+            Confidential Transfer
+          </h2>
           <input
             className="border p-2 rounded w-full mb-2"
             placeholder="Recipient address"
@@ -111,7 +123,9 @@ export default function Chat() {
 
         {/* Chatbot */}
         <div className="bg-yellow-900/10 border border-yellow-400/40 rounded-xl p-6 w-full max-w-xl mx-auto space-y-4">
-          <h2 className="text-lg font-semibold text-yellow-400">Ask Zama Chatbot</h2>
+          <h2 className="text-lg font-semibold text-yellow-400">
+            Ask Zama Chatbot
+          </h2>
           <div className="flex items-center gap-2">
             <input
               type="text"
@@ -129,7 +143,11 @@ export default function Chat() {
               <i className="fa-solid fa-arrow-right"></i>
             </button>
           </div>
-          {chatResponse && <p className="p-2 border rounded text-white bg-black/40 mt-2">{chatResponse}</p>}
+          {chatResponse && (
+            <p className="p-2 border rounded text-white bg-black/40 mt-2">
+              {chatResponse}
+            </p>
+          )}
         </div>
       </section>
     </div>
