@@ -1,7 +1,11 @@
 import type { NextConfig } from "next";
+import createNextPluginTM from "next-transpile-modules";
+
+// transpile @zama-fhe/relayer-sdk
+const withTM = createNextPluginTM(["@zama-fhe/relayer-sdk"]);
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  reactStrictMode: true,
 };
 
-export default nextConfig;
+export default withTM(nextConfig);
