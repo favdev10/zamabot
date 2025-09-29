@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function HeroSection() {
   return (
@@ -16,9 +17,11 @@ export default function HeroSection() {
             Get Instant Answers, Learn How To Contribute, And Discover
             Opportunities.
           </p>
-          <button className="bg-yellow-400 text-black px-8 py-3 rounded-full font-semibold hover:bg-yellow-300 transition">
-            Message our chatbot
-          </button>
+          <Link href="/chat">
+            <button className="cursor-pointer bg-yellow-400 text-black px-8 py-3 rounded-full font-semibold hover:bg-yellow-300 transition">
+              Message our chatbot
+            </button>
+          </Link>
         </div>
         {/* Right Image */}
         <div className="md:w-1/2 flex justify-center">
