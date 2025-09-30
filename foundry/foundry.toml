@@ -8,7 +8,7 @@ libs = ["lib"]
 sepolia = "https://eth-sepolia.g.alchemy.com/v2/w_dGzir944Ci5GJHm0rlZdexl1umMJVW"
 
 [env]
-PRIVATE_KEY = "529ff5679574b128d01f8afab91cb6110af53b2ec16234a15aafdef6c4756a8f"
+PRIVATE_KEY = "your wallet private key"
 
 remappings = [
   "fhevm-solidity/=lib/fhevm-solidity/",
