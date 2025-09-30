@@ -6,6 +6,7 @@ const withTM = createNextPluginTM(["@zama-fhe/relayer-sdk"]);
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  transpilePackages: ["@zama-fhe/relayer-sdk"],
 };
 
 export default withTM(nextConfig);
