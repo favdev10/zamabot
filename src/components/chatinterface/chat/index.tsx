@@ -9,6 +9,14 @@ import {
   userDecrypt,
 } from "@zama-fhe/relayer-sdk";
 
+let instancePromise: any;
+function getInstance() {
+  if (!instancePromise) {
+    instancePromise = createInstance(SepoliaConfig);
+  }
+  return instancePromise;
+}
+
 export default function Chat() {
   const [amount, setAmount] = useState("");
   const [recipient, setRecipient] = useState("");
@@ -21,18 +29,21 @@ export default function Chat() {
     if (!amount || !recipient) return;
     const provider = new ethers.BrowserProvider((window as any).ethereum);
     const signer = await provider.getSigner();
-    const instance = await createInstance(SepoliaConfig);
+
+    const instance = await getInstance();
     const encryptedAmount = await createEncryptedInput(
       instance,
       signer,
       "uint64",
       amount
     );
+
     const contract = new ethers.Contract(
       process.env.NEXT_PUBLIC_CONTRACT_ADDRESS!,
       ["function transfer(address from, address to, euint64 amount) public"],
       signer
     );
+
     const tx = await contract.transfer(
       await signer.getAddress(),
       recipient,
@@ -46,12 +57,14 @@ export default function Chat() {
   const handleDecryptBalance = async () => {
     const provider = new ethers.BrowserProvider((window as any).ethereum);
     const signer = await provider.getSigner();
-    const instance = await createInstance(SepoliaConfig);
+    const instance = await getInstance();
+
     const contract = new ethers.Contract(
       process.env.NEXT_PUBLIC_CONTRACT_ADDRESS!,
       ["function encryptedBalanceOf(address) view returns (euint64)"],
       provider
     );
+
     const encryptedBalance = await contract.encryptedBalanceOf(
       await signer.getAddress()
     );
