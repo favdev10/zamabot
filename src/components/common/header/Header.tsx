@@ -1,10 +1,30 @@
 "use client";
 import { useState } from "react";
 import Image from "next/image";
+import { ethers } from "ethers";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [account, setAccount] = useState<string | null>(null);
 
+  const connectWallet = async () => {
+    try {
+      if (!(window as any).ethereum) {
+        alert("MetaMask not detected. Please install it first.");
+        return;
+      }
+
+      // Request wallet connection
+      const provider = new ethers.BrowserProvider((window as any).ethereum);
+      await provider.send("eth_requestAccounts", []);
+      const signer = await provider.getSigner();
+      const address = await signer.getAddress();
+
+      setAccount(address);
+    } catch (err) {
+      console.error("Wallet connection failed:", err);
+    }
+  };
   return (
     <header className="bg-black text-white">
       <header className="w-full px-6 lg:px-20 py-4 flex items-center justify-between relative">
@@ -33,8 +53,13 @@ export default function Header() {
           </a>
         </nav>
         {/* Wallet Button */}
-        <button className="hidden lg:block bg-yellow-400 text-black px-6 py-3 rounded-full font-medium hover:bg-yellow-300 transition">
-          Connect Wallet
+        <button
+          onClick={connectWallet}
+          className="hidden lg:block bg-yellow-400 text-black px-6 py-3 rounded-full font-medium hover:bg-yellow-300 transition"
+        >
+          {account
+            ? `${account.slice(0, 6)}...${account.slice(-4)}`
+            : "Connect Wallet"}
         </button>
         {/* Mobile Menu Button */}
         <button
